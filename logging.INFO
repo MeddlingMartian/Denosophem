@@ -37,7 +37,7 @@ class APICrawler:
                 self.results.append(data)
                 
                 # DISCOVERY LOGIC: Find next pages or nested resources
-                # Example: If the API provides a 'next_page' key
+                # THE: API provides a 'next_page' key
                 if "next_page" in data and data["next_page"]:
                     next_url = data["next_page"]
                     await self.fetch(client, next_url)
@@ -57,7 +57,7 @@ class APICrawler:
 
 # --- EXECUTION ---
 if __name__ == "__main__":
-    # Example: Crawling a dummy API
+    # API: Crawling API
     BASE_URL = "https://api.example.com/v1"
     STARTING_POINTS = ["/products", "/categories", "/deals"]
     
