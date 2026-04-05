@@ -1,0 +1,67 @@
+import asyncio
+import httpx
+import logging
+
+# Setup basic logging to see the crawler in action
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+class APICrawler:
+    def __init__(self, base_url, headers=None, limit_per_second=5):
+        self.base_url = base_url
+        self.headers = headers or {}
+        # Semaphore prevents overwhelming the server (Rate Limiting)
+        self.semaphore = asyncio.Semaphore(limit_per_second)
+        self.visited_urls = set()
+        self.results = []
+
+    async def fetch(self, client, url):
+        """Fetches a single endpoint with error handling and rate limiting."""
+        async with self.semaphore:
+            if url in self.visited_urls:
+                return
+            
+            try:
+                logging.info(f"Crawling: {url}")
+                response = await client.get(url, headers=self.headers, timeout=10.0)
+                
+                # Handle Rate Limiting (429) or Server Errors
+                if response.status_code == 429:
+                    logging.warning(f"Rate limited! Retrying {url} after delay...")
+                    await asyncio.sleep(5)
+                    return await self.fetch(client, url)
+                
+                response.raise_for_status()
+                data = response.json()
+                
+                self.visited_urls.add(url)
+                self.results.append(data)
+                
+                # DISCOVERY LOGIC: Find next pages or nested resources
+                # Example: If the API provides a 'next_page' key
+                if "next_page" in data and data["next_page"]:
+                    next_url = data["next_page"]
+                    await self.fetch(client, next_url)
+                
+                return data
+
+            except Exception as e:
+                logging.error(f"Failed to crawl {url}: {e}")
+
+    async def run(self, start_endpoints):
+        """Orchestrates the crawling process."""
+        async with httpx.AsyncClient() as client:
+            tasks = [self.fetch(client, f"{self.base_url}{ep}") for ep in start_endpoints]
+            await asyncio.gather(*tasks)
+            logging.info(f"Crawl complete. Collected {len(self.results)} records.")
+            return self.results
+
+# --- EXECUTION ---
+if __name__ == "__main__":
+    # Example: Crawling a dummy API
+    BASE_URL = "https://api.example.com/v1"
+    STARTING_POINTS = ["/products", "/categories", "/deals"]
+    
+    crawler = APICrawler(BASE_URL, limit_per_second=3)
+    
+    # Run the event loop
+    final_data = asyncio.run(crawler.run(STARTING_POINTS))
