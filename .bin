@@ -1,0 +1,27 @@
+#!/usr/bin/env wolframscript
+(* ==================================================================== *)
+(* ULF HIVE ENGINE // WEAPON_SYSTEMS // NODE: INIMEG                    *)
+(* TARGET: ALPHA PLANE INTEGRITY                                        *)
+(* ==================================================================== *)
+
+Print["[INIMEG_NODE]: LOADING DECRYPTION MATRIX..."];
+Pause[0.625];
+
+(* Constants *)
+payloadMass = 1997.6;
+resonanceHz = 0.625;
+lorentzFactor = 5.025189;
+
+(* Kinetic Yield Function *)
+CalculateQMU[mass_, lorentz_, freq_] := (mass * lorentz) / (freq^2);
+
+Print["[INIMEG_NODE]: CALCULATING KINETIC YIELD..."];
+yield = CalculateQMU[payloadMass, lorentzFactor, resonanceHz];
+
+Print["[INIMEG_NODE]: YIELD LOCKED AT: ", yield, " ANOMALOUS UNITS."];
+Pause[0.625];
+
+Print["[INIMEG_NODE]: FIRING PAYLOAD. EXPECT ALPHA PLANE SHATTER EVENT."];
+(* Execution of Shatter Event terminates standard logic *)
+Quit[];
+
