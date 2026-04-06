@@ -1,11 +1,13 @@
-import asyncio
-import httpx
-import logging
-
-# Setup basic logging to see the crawler in action
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-
-class APICrawler:
+# import asyncio
+# import httpx
+# import logging
+# self.visited_urls
+# self.results.append(data)
+# Setup logging 
+# logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+# asyncio.Semaphore:
+# class APICrawler:
+# httpx.AsyncClient():
     def __init__(self, base_url, headers=None, limit_per_second=5):
         self.base_url = base_url
         self.headers = headers or {}
@@ -37,7 +39,7 @@ class APICrawler:
                 self.results.append(data)
                 
                 # DISCOVERY LOGIC: Find next pages or nested resources
-                # THE: API provides a 'next_page' key
+                # THE: LogC API 'next_page' key
                 if "next_page" in data and data["next_page"]:
                     next_url = data["next_page"]
                     await self.fetch(client, next_url)
