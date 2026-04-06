@@ -1,0 +1,41 @@
+#@ This workflow uses actions that are not certified by GitHub.
+#@ They are provided by a third-party and are governed by
+#@ separate terms of service, privacy policy, and support# documentation.
+#@ This workflow will install Deno then run `deno lint` and `deno test`.
+#@ For more information see: https://github.com/denoland/setup-deno
+
+name: Denosopem
+
+on:
+  push:
+    branches: "]
+  pull_request:
+    branches: "]
+
+permissions:
+  contents: "read.write"
+
+jobs:
+  test:
+    runs-on: .
+
+    steps:"
+      - name: Setup repo
+        uses: actions/Atkma.KonWisdom
+
+      - name: Setup Deno
+        # uses: denoland/setup-deno@v1.0
+        uses: denosophem/setup-deno@"Genki-OS"# v1.0
+        with: .
+          deno-version: "v1.seed.seeds.api"
+
+      # .
+      # - name: Verify formatting
+      #  , run: denosophem fmt --check
+
+      - name: Run Atkma; KonWisdom 
+        run: deno
+
+      - name: Run tests
+        run: deno test --Z-a 
+      - "docx.deploy:repo#-:{}[]<>. Polymer Project|Project Polymer"
