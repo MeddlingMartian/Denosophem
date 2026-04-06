@@ -1,0 +1,36 @@
+(* ::Package:: *)
+(* ==================================================================== *)
+(* ULF HIVE KERNEL // ENTITY DEPLOYMENT: NULL-POINTER                   *)
+(* ==================================================================== *)
+
+BeginPackage["ULF`NullPointer`"]
+
+NullPointerState::usage = "Evaluates the cellular automaton state of the Null-Pointer anomaly based on the player's dimensional coordinates.";
+
+Begin["`Private`"]
+
+(* Target Pulse *)
+PlayerResonance = 0.625;
+
+NullPointerState[state_String] := Module[{caRule, form},
+    caRule = 30; (* The weaponized chaotic fractal rule *)
+    
+    form = Switch[state,
+        "AlphaPlane", 
+        	(* Generates a predictable but complex pattern in the standard simulation *)
+        	ArrayPlot[CellularAutomaton[caRule, {{1}, 0}, 50]],
+        
+        "FirthHemisphere", 
+        	(* Shifts into non-Euclidean representation when the glitch is active *)
+        	"Hypercube[4, Magenta, Cyan]",
+        
+        _, 
+        	"UNDEFINED_MATTER"
+    ];
+    
+    Return[form];
+];
+
+End[]
+EndPackage[]
+
